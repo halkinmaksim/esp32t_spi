@@ -1,27 +1,53 @@
 #   Halkin Maksim
 
+
+#
+#
+#
+#   ampy --port COM13 put MAX6675.py
+#
+#
+
+"""
+import MAX6675
+sensors = MAX6675.MAX6675()
+sensors.getAllTemperature()
+
+sensors.dict_cs_pins
+sensors.dict_cs_obj
+sensors.getTemperature(0)
+
+sensors.getAllTemperature()
+
+ampy --port COM13 put MAX6675.py
+ampy --port COM13 put main.py
+
+
+"""
+
 import time
 import machine
+from machine import Pin as GPIO
+import MAX6675
 
 print("ESP32 Temperature sensor MAX6675")
 
-spi = machine.SPI(spihost=1,sck=18, miso=19,mosi=21, cs=5,duplex=False)
 
 
+
+sensors = MAX6675.MAX6675()
 i=0
 try:
-
+    while True:
+        sensors.getAllTemperature()
+        time.sleep(1)
+        i=i+1
 
 except KeyboardInterrupt as e:
+
     print("main.py except KeyboardInterrupt")
-    
+    #machine.reset()
 except Exception:
     print("main.py except Exception")
     machine.reset()
 
-
-    
-while True:
-a=spi.read(2)
-print((((a[0]<<8)|(a[1]))>>3)*0.25)
-time.sleep(1)

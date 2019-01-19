@@ -1,0 +1,5 @@
+.idea/*
+/LOG/*
+gpio.sh
+SRT-MEZ-LTE-SMS.json
+/labView_app/*
