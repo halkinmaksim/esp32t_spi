@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace esp32t_monitor
 {
@@ -22,7 +23,10 @@ namespace esp32t_monitor
 		List<char> arrayRxBuffer;
 		bool isFirstByte;
 
-		public Form1()
+        StreamWriter sw;
+
+
+        public Form1()
 		{
 			InitializeComponent();
 
@@ -40,8 +44,16 @@ namespace esp32t_monitor
 			this.seriesSensor3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
 			this.seriesSensor4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
 			this.seriesSensor5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-			
-		}
+
+            BindingSource bs = new BindingSource();
+            bs.DataSource = System.IO.Ports.SerialPort.GetPortNames();
+            comboBoxListCOMport.DataSource = bs;
+
+            //FileStream fs = new FileStream("Test.txt", FileMode.Append, FileAccess.Write);
+            //fs.wr
+            sw = new StreamWriter("Test.txt",true);
+
+        }
 
 		private void panelButton_Paint(object sender, PaintEventArgs e)
 		{
@@ -50,12 +62,20 @@ namespace esp32t_monitor
 
 		private void buttonConnect_Click(object sender, EventArgs e)
 		{
-			if (!serialPort1.IsOpen) {
-				serialPort1.Open();
-			}
-			//Console.WriteLine(re);
 
-			//serialPort1.Close();
+            if (!serialPort1.IsOpen)
+            {
+                // add correct value
+                serialPort1.PortName = comboBoxListCOMport.SelectedValue.ToString();
+                serialPort1.Open();
+                if (sw == null) {
+                }
+            }
+            else {
+                serialPort1.Close();
+                serialPort1.PortName = comboBoxListCOMport.SelectedValue.ToString();
+                serialPort1.Open();
+            }
 		}
 
 		private void serialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
@@ -75,14 +95,23 @@ namespace esp32t_monitor
 				{
 					arrayRxBuffer.Add(rb);
 					string str_read = new string(arrayRxBuffer.ToArray());
-					Console.WriteLine(str_read);
+                   // Console.WriteLine(DateTime.Now.ToLongTimeString());
+                    //Console.WriteLine(str_read);
 
 					DataTemper data = JsonConvert.DeserializeObject<DataTemper>(str_read);
-					Console.WriteLine(data.t0);
-					Console.WriteLine(data.t1);
-					Console.WriteLine(data.t2);
-					Console.WriteLine(data.t3);
-					Console.WriteLine(data.t4);
+
+                    Invoke(new MethodInvoker(delegate
+                    {
+                        this.seriesSensor1.Points.AddY(data.t0);
+                        this.seriesSensor2.Points.AddY(data.t1);
+                        this.seriesSensor3.Points.AddY(data.t2);
+                        this.seriesSensor4.Points.AddY(data.t3);
+                        this.seriesSensor5.Points.AddY(data.t4);
+                        sw.WriteLine("{5}\t\t{0}\t{1}\t{2}\t{3}\t{4}", data.t0, data.t1, data.t2, data.t3, data.t4, DateTime.Now.ToLongTimeString());
+
+                    }));
+
+                    
 					//data = JsonConvert.DeserializeObject<DataTemper>(jsReqstr);
 
 
@@ -109,7 +138,8 @@ namespace esp32t_monitor
 			if (serialPort1.IsOpen){
 				serialPort1.Close();
 			}
-		}
+            sw.Close();
+        }
 	}
 
 
