@@ -52,8 +52,19 @@ namespace esp32t_monitor
             //FileStream fs = new FileStream("Test.txt", FileMode.Append, FileAccess.Write);
             //fs.wr
             sw = new StreamWriter("Test.txt",true);
+			Console.WriteLine("Port name is {0}", Properties.Settings.Default.PortName);
+			if (Properties.Settings.Default.PortName != "") {
+				//comboBoxListCOMport.Items.IndexOf("COM13")
+				int idx = comboBoxListCOMport.Items.IndexOf(Properties.Settings.Default.PortName);
+				if (idx >= 0) {
+					comboBoxListCOMport.SelectedIndex = idx;
+				}
+			}
+			
+			
+			
 
-        }
+		}
 
 		private void panelButton_Paint(object sender, PaintEventArgs e)
 		{
@@ -65,15 +76,19 @@ namespace esp32t_monitor
 
             if (!serialPort1.IsOpen)
             {
-                // add correct value
-                serialPort1.PortName = comboBoxListCOMport.SelectedValue.ToString();
+				// add correct value
+				Properties.Settings.Default.PortName = comboBoxListCOMport.SelectedValue.ToString();
+				Properties.Settings.Default.Save();
+				serialPort1.PortName = comboBoxListCOMport.SelectedValue.ToString();
                 serialPort1.Open();
                 if (sw == null) {
                 }
             }
             else {
                 serialPort1.Close();
-                serialPort1.PortName = comboBoxListCOMport.SelectedValue.ToString();
+				Properties.Settings.Default.PortName = comboBoxListCOMport.SelectedValue.ToString();
+				Properties.Settings.Default.Save();
+				serialPort1.PortName = comboBoxListCOMport.SelectedValue.ToString();
                 serialPort1.Open();
             }
 		}
