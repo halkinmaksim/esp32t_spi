@@ -7,8 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
 using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using JsonFx.Serialization;
+using JsonFx.Json;
 
 namespace esp32t_monitor
 {
@@ -29,6 +33,14 @@ namespace esp32t_monitor
         public Form1()
 		{
 			InitializeComponent();
+
+			var reader = new JsonReader();
+			string dddd = @"{""t0"":20.5,""t1"":10.5}";
+			var template = new { t0 = 0.0, t1 = 0.0 };
+			var output = reader.Read(dddd, template);
+			Console.WriteLine(output.t0);
+			Console.WriteLine(output.t1);
+
 
 			arrayRxBuffer = new List<char>();
 			isFirstByte = false;
@@ -81,15 +93,19 @@ namespace esp32t_monitor
 				Properties.Settings.Default.Save();
 				serialPort1.PortName = comboBoxListCOMport.SelectedValue.ToString();
                 serialPort1.Open();
-                if (sw == null) {
+				buttonConnect.Text = "Disconnect";
+
+				if (sw == null) {
                 }
             }
             else {
                 serialPort1.Close();
-				Properties.Settings.Default.PortName = comboBoxListCOMport.SelectedValue.ToString();
+				buttonConnect.Text = "Connect";
+				/*Properties.Settings.Default.PortName = comboBoxListCOMport.SelectedValue.ToString();
 				Properties.Settings.Default.Save();
 				serialPort1.PortName = comboBoxListCOMport.SelectedValue.ToString();
                 serialPort1.Open();
+				*/
             }
 		}
 
@@ -110,23 +126,32 @@ namespace esp32t_monitor
 				{
 					arrayRxBuffer.Add(rb);
 					string str_read = new string(arrayRxBuffer.ToArray());
-                   // Console.WriteLine(DateTime.Now.ToLongTimeString());
-                    //Console.WriteLine(str_read);
+					// Console.WriteLine(DateTime.Now.ToLongTimeString());
+					//Console.WriteLine(str_read);
+					
 
-					DataTemper data = JsonConvert.DeserializeObject<DataTemper>(str_read);
+					DataContractJsonSerializer data = new DataContractJsonSerializer(typeof(DataTemper));
+					//data.ReadObject(str_read);
+
+					var reader = new JsonReader();
+					var template = new { t0 = 0.0, t1 = 0.0, t2=0.0,t3=0.0,t4=0.0};
+					var output = reader.Read(str_read, template);
+					
+
+					
 
                     Invoke(new MethodInvoker(delegate
                     {
-                        this.seriesSensor1.Points.AddY(data.t0);
-                        this.seriesSensor2.Points.AddY(data.t1);
-                        this.seriesSensor3.Points.AddY(data.t2);
-                        this.seriesSensor4.Points.AddY(data.t3);
-                        this.seriesSensor5.Points.AddY(data.t4);
-                        sw.WriteLine("{5}\t\t{0}\t{1}\t{2}\t{3}\t{4}", data.t0, data.t1, data.t2, data.t3, data.t4, DateTime.Now.ToLongTimeString());
+                        this.seriesSensor1.Points.AddY(output.t0);
+                        this.seriesSensor2.Points.AddY(output.t1);
+                        this.seriesSensor3.Points.AddY(output.t2);
+                        this.seriesSensor4.Points.AddY(output.t3);
+                        this.seriesSensor5.Points.AddY(output.t4);
+                        sw.WriteLine("{5}\t\t{0}\t{1}\t{2}\t{3}\t{4}", output.t0, output.t1, output.t2, output.t3, output.t4, DateTime.Now.ToLongTimeString());
 
                     }));
+					
 
-                    
 					//data = JsonConvert.DeserializeObject<DataTemper>(jsReqstr);
 
 
@@ -155,6 +180,15 @@ namespace esp32t_monitor
 			}
             sw.Close();
         }
+
+		private void timer1_Tick(object sender, EventArgs e)
+		{
+			this.seriesSensor1.Points.AddY(output.t0);
+			this.seriesSensor2.Points.AddY(output.t1);
+			this.seriesSensor3.Points.AddY(output.t2);
+			this.seriesSensor4.Points.AddY(output.t3);
+			this.seriesSensor5.Points.AddY(output.t4);
+		}
 	}
 
 
