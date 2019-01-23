@@ -270,8 +270,6 @@ namespace esp32t_monitor
 			
 		}
 
-		
-
 		private void textBox2_TextChanged(object sender, EventArgs e)
 		{
 			float result;
@@ -368,7 +366,6 @@ namespace esp32t_monitor
 				Properties.Settings.Default.Save();
 			}
 		}
-
 		private void textBox9_TextChanged(object sender, EventArgs e)
 		{
 			float result;
@@ -382,7 +379,6 @@ namespace esp32t_monitor
 				Properties.Settings.Default.Save();
 			}
 		}
-
 		private void textBox10_TextChanged(object sender, EventArgs e)
 		{
 			float result;
@@ -396,10 +392,30 @@ namespace esp32t_monitor
 				Properties.Settings.Default.Save();
 			}
 		}
-	}
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK) {
+                float t0, t1, t2, t3, t4;
+                StreamWriter save_file_w = new StreamWriter(saveFileDialog1.FileName);
+                int cnt = chart1.Series[0].Points.Count();
+                for (int i = 0; i < cnt; i++) {
+                    t0 = (float)this.seriesSensor1.Points[i].YValues[0];
+                    t1 = (float)this.seriesSensor2.Points[i].YValues[0];
+                    t2 = (float)this.seriesSensor3.Points[i].YValues[0];
+                    t3 = (float)this.seriesSensor4.Points[i].YValues[0];
+                    t4 = (float)this.seriesSensor5.Points[i].YValues[0];
+                    save_file_w.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}", t0, t1, t2, t3, t4, DateTime.Now.ToLongTimeString());
+                }
+
+                
+                save_file_w.Close();
+            }
+        }
+    }
 
 
-	public class DataTemper
+    public class DataTemper
 	{
 		/*
 		 * 

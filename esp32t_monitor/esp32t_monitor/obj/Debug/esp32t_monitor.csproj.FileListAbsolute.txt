@@ -7,7 +7,6 @@ D:\work\gitlab\esp32t_spi\esp32t_monitor\esp32t_monitor\obj\Debug\esp32t_monitor
 D:\work\gitlab\esp32t_spi\esp32t_monitor\esp32t_monitor\obj\Debug\esp32t_monitor.csproj.CoreCompileInputs.cache
 D:\work\gitlab\esp32t_spi\esp32t_monitor\esp32t_monitor\obj\Debug\esp32t_monitor.exe
 D:\work\gitlab\esp32t_spi\esp32t_monitor\esp32t_monitor\obj\Debug\esp32t_monitor.pdb
-D:\work\gitlab\esp32t_spi\esp32t_monitor\esp32t_monitor\obj\Debug\esp32t_monitor.csprojAssemblyReference.cache
 D:\work\gitlab\esp32t_spi\esp32t_monitor\esp32t_monitor\bin\Debug\JsonFx.dll
 D:\work\gitlab\esp32t_spi\esp32t_monitor\esp32t_monitor\bin\Debug\JsonFx.xml
-D:\work\gitlab\esp32t_spi\esp32t_monitor\esp32t_monitor\obj\Debug\esp32t_monitor.csproj.CopyComplete
+D:\work\gitlab\esp32t_spi\esp32t_monitor\esp32t_monitor\obj\Debug\esp32t_monitor.csprojResolveAssemblyReference.cache
