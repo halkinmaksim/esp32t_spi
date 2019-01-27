@@ -18,6 +18,8 @@ class MAX6675:
             obj.value(1)
 
 
+    def getSrednValue(self,num_sens):
+        pass
     def getTemperature(self,num_sens):
         self.dict_cs_obj[num_sens].value(0)
         a = self.spi.read(2)
@@ -32,5 +34,6 @@ class MAX6675:
         while i< len(self.dict_cs_obj):
             data_device["t"+str(i)]=self.getTemperature(i)
             i=i+1
-        data_device = ujson.dumps(data_device)
-        print(data_device)
+        if(data_device != {}):
+            data_device = ujson.dumps(data_device)
+            print(data_device)

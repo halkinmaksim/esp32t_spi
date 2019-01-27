@@ -4,3 +4,4 @@ gpio.sh
 SRT-MEZ-LTE-SMS.json
 /labView_app/*
 /esp32t_monitor/.vs/*
+*.dat

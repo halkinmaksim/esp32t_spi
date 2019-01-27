@@ -58,13 +58,17 @@ namespace esp32t_monitor
 			this.seriesSensor5 = chart1.Series.Add("t 5");
 
 			this.seriesSensor1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-			//this.seriesSensor1.Color = 
+            this.seriesSensor1.Color = Color.Red;
 			this.seriesSensor2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-			this.seriesSensor3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-			this.seriesSensor4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-			this.seriesSensor5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            this.seriesSensor1.Color = Color.Green;
+            this.seriesSensor3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            this.seriesSensor1.Color = Color.Blue;
+            this.seriesSensor4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            this.seriesSensor1.Color = Color.Black;
+            this.seriesSensor5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            this.seriesSensor1.Color = Color.Gray;
 
-			for(int i = 0; i < checkedListBoxSeriesView.Items.Count; i++) {
+            for (int i = 0; i < checkedListBoxSeriesView.Items.Count; i++) {
 				checkedListBoxSeriesView.SetItemChecked(i, true);
 			}
 
