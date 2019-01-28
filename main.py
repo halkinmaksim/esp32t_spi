@@ -36,18 +36,22 @@ print("ESP32 Temperature sensor MAX6675")
 
 
 sensors = MAX6675.MAX6675()
+sensors.StartThrReadTemperature()
 i=0
 try:
     while True:
-        sensors.getAllTemperature()
+        #sensors.getAllTemperature()
+        sensors.printTemperature()
         time.sleep(1)
         i=i+1
 
 except KeyboardInterrupt as e:
 
     print("main.py except KeyboardInterrupt")
+    sensors.StopThrReadTemperature()
     #machine.reset()
 except Exception:
     print("main.py except Exception")
+    sensors.StopThrReadTemperature()
     machine.reset()
 
