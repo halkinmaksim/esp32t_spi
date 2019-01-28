@@ -10,4 +10,6 @@ SRT-MEZ-LTE-SMS.json
 /esp32t_monitor/esp32t_monitor/bin/Release/*
 /esp32t_monitor/.vs/esp32t_monitor/v15/*
 /esp32t_monitor/.vs/esp32t_monitor/v15/Server/sqlite3/*
+/esp32t_monitor/.vs/esp32t_monitor/v15/.suo
+/esp32t_monitor/esp32t_monitor/bin/Debug/Test.txt
 *.dat
